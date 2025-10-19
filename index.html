@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olá, Chefe</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url('img/chuva.gif') center/cover no-repeat fixed;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Overlay escuro sobre a imagem */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Página inicial */
+        .page1 {
+            text-align: center;
+            z-index: 2;
+            padding: 40px 20px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .page1.hidden {
+            display: none;
+        }
+
+        /* Página de confirmação */
+        .page2 {
+            text-align: center;
+            z-index: 2;
+            padding: 40px 20px;
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .page2.show {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .character {
+            font-size: 120px;
+            animation: bounce 3s ease-in-out infinite;
+        }
+
+        .character img { width: 380px; }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .title {
+            font-size: 56px;
+            font-weight: bold;
+            color: #ffc107;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .question {
+            font-size: 24px;
+            color: #ffffff;
+            margin-bottom: 40px;
+            line-height: 1.4;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-yes {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(0, 102, 204, 0.4);
+        }
+
+        .btn-yes:hover {
+            background-color: #0052a3;
+            box-shadow: 0 6px 20px rgba(0, 102, 204, 0.6);
+            transform: scale(1.05);
+        }
+
+        .btn-yes:active {
+            transform: scale(0.98);
+        }
+
+        .btn-no {
+            background-color: #ff3333;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(255, 51, 51, 0.4);
+            position: relative;
+            transition: all 0.1s ease;
+        }
+
+        .btn-no:hover {
+            box-shadow: 0 6px 20px rgba(255, 51, 51, 0.6);
+        }
+
+        /* Página 2 - Confirmação */
+        .page2 {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: url('img/goku.gif') center/cover no-repeat !important;
+            background-attachment: fixed !important;
+        }
+
+        .page2.show {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .confirmation-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 50px 40px;
+            max-width: 600px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 10;
+        }
+
+        .confirmation-title {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ffc107;
+            text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .confirmation-subtitle {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 35px;
+            font-weight: bold;
+        }
+
+        .attributes-list {
+            text-align: left;
+            margin-bottom: 40px;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .attribute-item {
+            margin: 15px 0;
+            font-weight: 500;
+        }
+
+        .positive {
+            color: #28a745;
+        }
+
+        .negative {
+            color: #dc3545;
+        }
+
+        .btn-confirm {
+            background-color: #ffc107;
+            color: #333;
+            border: none;
+            padding: 15px 50px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn-confirm:hover {
+            background-color: #ffb300;
+            box-shadow: 0 6px 20px rgba(255, 193, 7, 0.6);
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 40px;
+            }
+
+            .question {
+                font-size: 18px;
+            }
+
+            .btn-yes, .btn-no {
+                padding: 12px 30px;
+                font-size: 16px;
+            }
+
+            .confirmation-title {
+                font-size: 36px;
+            }
+
+            .confirmation-subtitle {
+                font-size: 22px;
+            }
+
+            .attributes-list {
+                font-size: 18px;
+            }
+
+            .confirmation-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Página 1: Pergunta -->
+    <div class="page1" id="page1">
+        <div class="character"><img src="img/urso-pidao.png" alt="" srcset=""></div>
+        <h1 class="title">Olá, Chefe</h1>
+        <p class="question">O senhor poderia me dar por gentiliza me dar uma aumento?</p>
+        <div class="buttons">
+            <button class="btn-yes" id="yesBtn">Claro, Meu Melhor Funcionário</button>
+            <button class="btn-no" id="noBtn">Não</button>
+        </div>
+    </div>
+
+    <!-- Página 2: Confirmação -->
+    <div class="page2" id="page2">
+        <div class="confirmation-card">
+            <h1 class="confirmation-title">OBRIGADO CHEFE</h1>
+            <h2 class="confirmation-subtitle">Atributos melhorados</h2>
+            
+            <div class="attributes-list">
+                <div class="attribute-item">
+                    Salário: <span class="positive">+40%</span>
+                </div>
+                <div class="attribute-item">
+                    Gratidão: <span class="positive">+23%</span>
+                </div>
+                <div class="attribute-item">
+                    Vontade de se demitir: <span class="negative">-32%</span>
+                </div>
+                <div class="attribute-item">
+                    Mau humor: <span class="negative">-17%</span>
+                </div>
+            </div>
+
+            <button class="btn-confirm" id="confirmBtn">Dar aumento extra</button>
+        </div>
+    </div>
+
+<script>
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const confirmBtn = document.getElementById('confirmBtn');
+    const page1 = document.getElementById('page1');
+    const page2 = document.getElementById('page2');
+    const confirmationCard = document.querySelector('.confirmation-card');
+
+    // Clique no botão "Dar aumento extra"
+    yesBtn.addEventListener('click', function() {
+        page1.classList.add('hidden');
+        page2.classList.add('show');
+    });
+
+    // Botão "Não" escapa do mouse
+    noBtn.addEventListener('mouseover', function() {
+        const randomX = Math.random() * (window.innerWidth - 200);
+        const randomY = Math.random() * (window.innerHeight - 60);
+        noBtn.style.position = 'fixed';
+        noBtn.style.left = randomX + 'px';
+        noBtn.style.top = randomY + 'px';
+        noBtn.style.zIndex = '1000';
+    });
+
+    // Prevenir click no botão "Não"
+    noBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    // Botão "Claro, meu melhor funcionário" agora mostra apenas o check
+    confirmBtn.addEventListener('click', function() {
+        confirmationCard.innerHTML = `
+            <div style="text-align:center;">
+                <img src="img/check.png" alt="Check" style="width:200px;">
+            </div>
+        `;
+    });
+</script>
+
+</body>
+</html>
